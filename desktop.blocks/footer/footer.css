@@ -1,0 +1,21 @@
+.footer {
+    background-color: rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 121px;
+    position: absolute;
+    bottom: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    -webkit-transition: background-color .3s ease-in;
+    -moz-transition: background-color .3s ease-in;
+    -ms-transition: background-color .3s ease-in;
+    -o-transition: background-color .3s ease-in;
+}
+
+.footer:hover {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.footer::-webkit-scrollbar {
+    display: none;
+}

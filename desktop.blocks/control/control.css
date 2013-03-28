@@ -1,0 +1,19 @@
+@font-face{
+    font-family: Control;
+    src: url(font/control.ttf);
+}
+
+.control {
+	height: 100%;
+	width: 10%;
+    color: #555;
+    font-size: 50px;
+    text-align: center;
+    font-family: Control;
+}
+
+.control:hover {
+    background-color: rgba(0, 0, 0, .1);
+    color: #fff;
+    cursor: pointer;
+}

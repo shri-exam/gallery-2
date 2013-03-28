@@ -1,0 +1,12 @@
+.thumbnail__item {
+    display: inline-block;
+    margin: 10px 0 10px 5px;
+}
+
+.thumbnail__item img {
+    height: 100px;
+}
+
+.thumbnail__item:hover {
+    cursor: pointer;
+}
