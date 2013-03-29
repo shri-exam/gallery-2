@@ -14,25 +14,7 @@
     content:[{
             block: 'content',
             js: 'true',
-            content: [{
-                block: 'control',
-                mods: {
-                    type: 'prev'
-                },
-                content: {
-                    elem: 'wrap',
-                    content: '◄'
-                }
-            },{
-                block: 'control',
-                mods: {
-                    type: 'next'
-                },
-                content: {
-                    elem: 'wrap',
-                    content: '►'
-                }
-            },{
+            content: [,{
                 block: 'slider',
                 content: [{
                     elem: 'item',
@@ -59,6 +41,24 @@
                         tag: 'img'
                     }
                 }]
+            },{
+                block: 'control',
+                mods: {
+                    type: 'prev'
+                },
+                content: {
+                    elem: 'wrap',
+                    content: '◄'
+                }
+            },{
+                block: 'control',
+                mods: {
+                    type: 'next'
+                },
+                content: {
+                    elem: 'wrap',
+                    content: '►'
+                }
             }]
         },
         {

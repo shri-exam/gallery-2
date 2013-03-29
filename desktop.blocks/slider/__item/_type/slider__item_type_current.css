@@ -1,4 +1,41 @@
 .slider__item_type_current {
     position: absolute;
     width: 100%;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-transition: -webkit-transform .3s ease-in;
+    -moz-transition: -moz-transform .3s ease-in;
+    -ms-transition: -ms-transform .3s ease-in;
+    -o-transition: -o-transform .3s ease-in;
+}
+
+.to-current {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.to-next {
+    -webkit-transform: translate3d(+100%, 0, 0);
+    -moz-transform: translate3d(+100%, 0, 0);
+    -o-transform: translate3d(+100%, 0, 0);
+    -ms-transform: translate3d(+100%, 0, 0);
+    transform: translate3d(+100%, 0, 0);
+}
+
+.to-prev {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    -moz-transform: translate3d(-100%, 0, 0);
+    -o-transform: translate3d(-100%, 0, 0);
+    -ms-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+}
+
+.visibility_false {
+    opacity: 0;
 }
