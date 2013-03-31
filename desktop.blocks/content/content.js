@@ -129,7 +129,8 @@ BEM.DOM.decl('content', {
 
     insertImage: function(obj, id) {
 
-        var intId = parseInt(id.match(/\d+/)[0]);
+        var intId = parseInt(id.match(/\d+/)[0]),
+            that = this;
 
         obj.addClass('not-loaded');
         obj.attr('src', this.entries[intId].img.XL.href);
@@ -138,6 +139,7 @@ BEM.DOM.decl('content', {
         this.isImgLoaded(obj).then(function() {
             obj.css('max-height', obj[0].naturalHeight);
             obj.removeClass('not-loaded');
+            that.reCalc();
         });
 
     },
