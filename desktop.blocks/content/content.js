@@ -184,7 +184,6 @@ BEM.DOM.decl('content', {
             next
                 .one('webkitTransitionEnd oTransitionEnd otransitionend transitionend', function() {
                     that._content.removeClass('no-click');
-                    dfd.resolve();
                 });
             console.log(current);
             current[0].className = current[0].className.replace('slider__item_type_current', 'slider__item_type_prev');

@@ -1,0 +1,12 @@
+.slider__item {
+    display: table;
+    opacity: 0;
+    -webkit-transition: -webkit-transform, opacity, 1s ease-in;
+    -moz-transition: -moz-transform, opacity, 1s ease-in;
+    -ms-transition: -ms-transform, opacity, 1s ease-in;
+    -o-transition: -o-transform, opacity, 1s ease-in;
+}
+
+.slider__item img {
+    max-height: 100%;
+}
