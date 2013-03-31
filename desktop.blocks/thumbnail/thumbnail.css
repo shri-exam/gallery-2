@@ -12,14 +12,6 @@
     transform: translate3d(0, 0, 0);
 }
 
-.thumbnail:hover {
-    -webkit-transform: translate3d(0, -121px, 0);
-    -moz-transform: translate3d(0, -121px, 0);
-    -o-transform: translate3d(0, -121px, 0);
-    -ms-transform: translate3d(0, -121px, 0);
-    transform: translate3d(0, -121px, 0);
-}
-
 .thumbnail::-webkit-scrollbar {
     display: none;
 }

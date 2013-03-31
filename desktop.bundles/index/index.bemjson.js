@@ -22,7 +22,10 @@
                         type: 'prev'
                     },
                     content: {
-                        tag: 'img'
+                        elem: 'inner',
+                        content: {
+                            tag: 'img'
+                        }
                     }
                 },{
                     elem: 'item',
@@ -30,7 +33,10 @@
                         type: 'current'
                     },
                     content: {
-                        tag: 'img'
+                        elem: 'inner',
+                        content: {
+                            tag: 'img'
+                        }
                     }
                 },{
                     elem: 'item',
@@ -38,7 +44,10 @@
                         type: 'next'
                     },
                     content: {
-                        tag: 'img'
+                        elem: 'inner',
+                        content: {
+                            tag: 'img'
+                        }
                     }
                 }]
             },{

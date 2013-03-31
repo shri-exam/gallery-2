@@ -1,10 +1,14 @@
 .thumbnail__item {
     display: inline-block;
     margin: 10px 0 10px 5px;
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
+    position: relative;
 }
 
 .thumbnail__item img {
-    height: 100px;
+    position: absolute;
 }
 
 .thumbnail__item:hover {
