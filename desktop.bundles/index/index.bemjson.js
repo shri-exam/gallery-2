@@ -6,6 +6,7 @@
         { elem: 'css', url: '_index.css', ie: false },
         { elem: 'css', url: '_index', ie: true },
         { block: 'i-jquery', elem: 'core' },
+        { elem: 'js', url: 'http://demos.flesler.com/jquery/scrollTo/js/jquery.scrollTo-min.js' },
         { elem: 'js', url: '_index.js' },
         { elem: 'js', url: '_index.bemhtml.js' },
         { elem: 'meta', attrs: { name: 'description', content: '' }},

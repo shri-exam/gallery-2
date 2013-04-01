@@ -7,12 +7,17 @@ BEM.DOM.decl('content', {
             var that = this;
 
             this.scrollAnimationTime = 100;
-            this.nextLink = 'http://api-fotki.yandex.ru/api/users/aig1001/album/63684/photos/?format=json&limit=100&callback=?';
+            this.nextLink = 'http://api-fotki.yandex.ru/api/users/aig1001/album/63684/photos/?format=json&limit=20&callback=?';
             this.entries = [];
             this._content = $('.content');
+            this.isFirstRun = true;
+            this.count = 0;
+            this.currentId = 0;
 
             window.addEventListener('mousewheel', function(event) {
+
                  that.onWheel(event)
+
             }, false);
 
             this.getImages();
@@ -31,19 +36,48 @@ BEM.DOM.decl('content', {
         $.getJSON( this.nextLink, function(data) {
 
             that.entries = $.merge(that.entries, data.entries);
+
             if (data.links.next) {
 
-                that.nextLink = data.links.next + '&limit=100&callback=?';
-                that.getImages();
-                that.fillThumbnail();
-                if (that.entries.length == 100) {
+                if (that.isFirstRun){
 
-                    that.insertImage($('.slider__item_type_current img'), 'img0');
-                    that.insertImage($('.slider__item_type_next img'), 'img1');
-                };
+                    console.log('first run');
+
+                    if (!!JSON.parse(localStorage.getItem('entries')) && JSON.parse(localStorage.getItem('entries')).length == data.imageCount) {
+
+                        console.log("localStorage.entries fine" + typeof JSON.parse(localStorage.getItem('entries')));
+
+                        that.entries = JSON.parse(localStorage.getItem('entries'));
+                        that.isFirstRun = false;
+                        that.fillThumbnail();
+                        that.startFrom(parseInt(localStorage.currentId));
+                        that.doLeftScroll(parseInt(localStorage.currentId));
+
+                        console.log('start from ' + parseInt(localStorage.currentId));
+
+                        return;
+
+                    } else {
+
+                        that.startFrom(0);
+                        that.isFirstRun = false;
+
+                    }
+
+                }
+
+                that.nextLink = data.links.next + '&limit=20&callback=?';
+                that.fillThumbnail();
+                that.getImages();
 
             } else {
-                console.log('Parsing done. ' + that.entries.length + ' url\'s parsed');
+
+                localStorage.setItem('entries', JSON.stringify(that.entries));
+                that.fillThumbnail();
+                console.log('Parsing done. ' + (that.entries.length) + ' url\'s parsed');
+                console.log(JSON.parse(localStorage.getItem('entries')));
+                console.log(that.entries);
+
             }
         });
 
@@ -58,38 +92,56 @@ BEM.DOM.decl('content', {
                 content: []
             },
             that = this,
-            thumbnailSize = $('.thumbnail__item').height();
+            thumbnailSize = 100;
 
         this.entries.forEach(function(item, i) {
 
-            thumbnailItem.content = {
-                tag: 'img',
-                attrs: {
-                    src: item.img.S.href,
-                    fullimg: item.img.XL.href,
-                    title: item.title,
-                    id: 'img'+i
-                }
-            };
-            $('.thumbnail').append($(BEMHTML.apply(thumbnailItem)));
-            var thumbnailImg = $('.thumbnail__item #img'+i);
+            if ( i >= that.count ) {
 
-            that.isImgLoaded(thumbnailImg).then(function() {
-                if (thumbnailImg.height() < thumbnailImg.width()) {
-                    thumbnailImg.height(thumbnailSize);
-                    thumbnailImg.css('left', -(thumbnailImg.width() - thumbnailSize) / 2 + 'px');
-                } else if (thumbnailImg.width() < thumbnailImg.height()) {
-                    thumbnailImg.width(thumbnailSize);
-                    thumbnailImg.css('top', -(thumbnailImg.height() - thumbnailSize) / 2 + 'px');
-                }
-            });
+                //console.log('img'+i);
 
-            if (i == that.entries.length -1) {
+                thumbnailItem.content = {
+                    tag: 'img',
+                    attrs: {
+                        src: item.img.S.href,
+                        fullimg: item.img.XL.href,
+                        title: item.title,
+                        id: 'img'+i
+                    }
+                };
+
+                $('.thumbnail').append($(BEMHTML.apply(thumbnailItem)));
+                var thumbnailImg = $('.thumbnail__item #img'+i);
+
+                that.isImgLoaded(thumbnailImg).then(function() {
+
+                    if (thumbnailImg.height() < thumbnailImg.width()) {
+
+                        thumbnailImg.height(thumbnailSize);
+                        thumbnailImg.css('left', -(thumbnailImg.width() - thumbnailSize) / 2 + 'px');
+
+                    } else if (thumbnailImg.width() < thumbnailImg.height()) {
+
+                        thumbnailImg.width(thumbnailSize);
+                        thumbnailImg.css('top', -(thumbnailImg.height() - thumbnailSize) / 2 + 'px');
+
+                    }
+
+                });
+
+            }
+
+            if (i == that.entries.length - 1) {
+
                 dfd.resolve();
+
             };
         });
         $.when(dfd).then(function() {
+
             that.reBind.call(that);
+            that.count = that.entries.length;
+
         });
 
     },
@@ -102,23 +154,34 @@ BEM.DOM.decl('content', {
         $('.thumbnail__item img').on('click', function(event) {
 
             var link = $(this).attr('fullimg'),
-                id = $(this).attr('id');
+                id = $(this).attr('id'),
+                intId = that.getIntId($(this).attr('id')),
+                currentId = that.getIntId($('.slider__item_type_current img').attr('id'));
 
-            currentId = $('.slider__item_type_current img').attr('id');
-            if (currentId < id) {
+                console.log($('.slider__item_type_current img').attr('id'));
+
+            if (currentId < intId) {
+
+                console.log('next  ');
 
                 that.insertImage($('.slider__item_type_next img'), id );
                 that._next().then(function() {
-                    var nextId = 'img' + (parseInt(id.match(/\d+/)[0]) - 1);
-                    that.insertImage($('.slider__item_type_prev img'), nextId );
+                    var nextId = 'img' + (that.getIntId(id) + 1),
+                        prevId = 'img' + (that.getIntId(id) - 1);
+                    that.insertImage($('.slider__item_type_prev img'), prevId);
+                    that.insertImage($('.slider__item_type_next img'), nextId);
                 });
 
-            } else if (currentId > id) {
+            } else if (currentId > intId) {
+
+                console.log('prev  ');
 
                 that.insertImage($('.slider__item_type_prev img'), id );
                 that._prev().then(function() {
-                    var nextId = 'img' + (parseInt(id.match(/\d+/)[0]) + 1);
-                    that.insertImage($('.slider__item_type_next img'), nextId );
+                    var nextId = 'img' + (that.getIntId(id) + 1),
+                        prevId = 'img' + (that.getIntId(id) - 1);
+                    that.insertImage($('.slider__item_type_next img'), nextId);
+                    this.insertImage($('.slider__item_type_prev img'), prevId);
                 });
 
             }
@@ -129,7 +192,7 @@ BEM.DOM.decl('content', {
 
     insertImage: function(obj, id) {
 
-        var intId = parseInt(id.match(/\d+/)[0]),
+        var intId = this.getIntId(id),
             that = this;
 
         obj.addClass('not-loaded');
@@ -173,8 +236,9 @@ BEM.DOM.decl('content', {
     },
 
     _next: function() {
+        this.currentId = this.getIntId($('.slider__item_type_current img').attr('id'));
 
-        if (parseInt($('.slider__item_type_current img').attr('id').match(/\d+/)[0]) <= this.entries.length) {
+        if (this.currentId <= this.entries.length) {
 
             var next = $('.slider__item_type_next'),
                 prev = $('.slider__item_type_prev'),
@@ -187,22 +251,29 @@ BEM.DOM.decl('content', {
                 .one('webkitTransitionEnd oTransitionEnd otransitionend transitionend', function() {
                     that._content.removeClass('no-click');
                 });
-            console.log(current);
             current[0].className = current[0].className.replace('slider__item_type_current', 'slider__item_type_prev');
             prev[0].className = prev[0].className.replace('slider__item_type_prev', 'slider__item_type_next');
             next[0].className = next[0].className.replace('slider__item_type_next', 'slider__item_type_current');
 
+            this.currentId = this.getIntId($('.slider__item_type_current img').attr('id'));
+            this.doLeftScroll(this.currentId);
 
-            var nextId = 'img' + (parseInt($('.slider__item_type_current img').attr('id').match(/\d+/)[0]) + 1);
-            this.insertImage($('.slider__item_type_next img'), nextId);
+            var nextId = this.getIntId($('.slider__item_type_current img').attr('id')) + 1;
+
+            localStorage.currentId = this.getIntId($('.slider__item_type_current img').attr('id'));
+            console.log(localStorage.currentId);
+
+            this.insertImage($('.slider__item_type_next img'), 'img' + nextId);
             return dfd.promise();
         }
 
     },
 
     _prev: function() {
+        this.currentId = this.getIntId($('.slider__item_type_current img').attr('id'));
 
-        if (parseInt($('.slider__item_type_current img').attr('id').match(/\d+/)[0]) > 0) {
+        if (this.currentId > 0) {
+
             var next = $('.slider__item_type_next'),
                 prev = $('.slider__item_type_prev'),
                 current = $('.slider__item_type_current'),
@@ -215,16 +286,28 @@ BEM.DOM.decl('content', {
                     that._content.removeClass('no-click');
                     dfd.resolve();
                 });
-            console.log(current);
             current[0].className = current[0].className.replace('slider__item_type_current', 'slider__item_type_next');
             prev[0].className = prev[0].className.replace('slider__item_type_prev', 'slider__item_type_current');
             next[0].className = next[0].className.replace('slider__item_type_next', 'slider__item_type_prev');
 
-            var nextId = 'img' + (parseInt($('.slider__item_type_current img').attr('id').match(/\d+/)[0]) - 1);
-            this.insertImage($('.slider__item_type_prev img'), nextId);
+            this.currentId = this.getIntId($('.slider__item_type_current img').attr('id'));
+            this.doLeftScroll(this.currentId);
+
+            var prevId = this.getIntId($('.slider__item_type_current img').attr('id')) - 1;
+
+            localStorage.currentId = this.getIntId($('.slider__item_type_current img').attr('id'));
+            console.log(localStorage.currentId);
+
+            this.insertImage($('.slider__item_type_prev img'), 'img' + prevId);
             return dfd.promise();
         }
 
+    },
+
+    startFrom: function(id) {
+        id != -1 && this.insertImage($('.slider__item_type_prev img'), 'img'+(id-1));
+        this.insertImage($('.slider__item_type_current img'), 'img'+(id));
+        this.insertImage($('.slider__item_type_next img'), 'img'+(id+1));
     },
 
     _onResize: function() {
@@ -236,14 +319,19 @@ BEM.DOM.decl('content', {
             if ( new Date() - lastResize > 100 ) {
                 lastResize = new Date();
                 that.reCalc();
+                that.doLeftScroll(than.currentId);
             };
         })
     },
 
     reCalc: function() {
-        if (window.innerHeight < $('.slider__inner img')[0].naturalHeight) {
+        if (window.innerHeight > $('.slider__inner img')[0].naturalHeight) {
             $('.slider__inner img').css('height', window.innerHeight);
         }
+    },
+
+    getIntId: function(id) {
+        return parseInt(id.match(/\d+/)[0]);
     },
 
     onWheel: function(event) {
@@ -260,6 +348,16 @@ BEM.DOM.decl('content', {
             event.preventDefault();
         } else this.lastWeel = new Date();
 
+    },
+
+    doLeftScroll: function(id) {
+        id+=1;
+        if ((id * 110) > (window.innerWidth / 2)) {
+            $('.footer').scrollTo({top: 0, left: ( id * 110 -  ( window.innerWidth / 2 + 50 )) + 'px'}, 300);
+        } else if ((id * 110) < (window.innerWidth / 2)) {
+            $('.footer').scrollTo({top: 0, left: 0}, 300);
+        }
+        console.log();
     },
 
     doScroll: function(delta) {
