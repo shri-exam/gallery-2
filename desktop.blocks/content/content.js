@@ -351,7 +351,7 @@ BEM.DOM.decl('content', {
     },
 
     reCalc: function() {
-        if (window.innerHeight > $('.slider__inner img')[0].naturalHeight) {
+        if (window.innerHeight < $('.slider__inner img')[0].naturalHeight) {
             $('.slider__inner img').css('height', window.innerHeight);
         }
     },
