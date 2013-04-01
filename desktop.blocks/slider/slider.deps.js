@@ -1,5 +1,5 @@
 ({
     mustDeps: [{
-        elems: ['item', 'inner']
+        elems: ['item', 'inner', 'spin']
     }]
 })

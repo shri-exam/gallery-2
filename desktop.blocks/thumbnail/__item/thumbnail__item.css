@@ -14,3 +14,7 @@
 .thumbnail__item:hover {
     cursor: pointer;
 }
+
+.thumbnail-current {
+    box-shadow: 0 0 0 5px #2e66a7;
+}

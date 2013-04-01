@@ -2,3 +2,6 @@
 	position: absolute;
 	left: 0;
 }
+.control_type_prev .control__wrap {
+    left: 20%;
+}

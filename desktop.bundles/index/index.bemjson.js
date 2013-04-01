@@ -24,9 +24,11 @@
                     },
                     content: {
                         elem: 'inner',
-                        content: {
+                        content: [{
+                            elem: 'spin'
+                        },{
                             tag: 'img'
-                        }
+                        }]
                     }
                 },{
                     elem: 'item',
@@ -35,9 +37,11 @@
                     },
                     content: {
                         elem: 'inner',
-                        content: {
+                        content: [{
+                            elem: 'spin'
+                        },{
                             tag: 'img'
-                        }
+                        }]
                     }
                 },{
                     elem: 'item',
@@ -46,9 +50,11 @@
                     },
                     content: {
                         elem: 'inner',
-                        content: {
+                        content: [{
+                            elem: 'spin'
+                        },{
                             tag: 'img'
-                        }
+                        }]
                     }
                 }]
             },{

@@ -2,3 +2,7 @@
 	position: absolute;
 	right: 0;
 }
+
+.control_type_next .control__wrap {
+    right: 20%;
+}

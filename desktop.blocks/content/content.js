@@ -20,6 +20,13 @@ BEM.DOM.decl('content', {
 
             }, false);
 
+            $('html').hover(function() {
+                $('.control').removeClass('disable-controls');
+            },
+            function() {
+                $('.control').addClass('disable-controls');
+            })
+
             this.getImages();
             this.bindControll();
             this.reCalc();
@@ -52,6 +59,9 @@ BEM.DOM.decl('content', {
                         that.fillThumbnail();
                         that.startFrom(parseInt(localStorage.currentId));
                         that.doLeftScroll(parseInt(localStorage.currentId));
+                        that.currentId = parseInt(localStorage.currentId);
+                        that.hideButton();
+                        that.toCurrentThumbnail(that.currentId);
 
                         console.log('start from ' + parseInt(localStorage.currentId));
 
@@ -60,6 +70,8 @@ BEM.DOM.decl('content', {
                     } else {
 
                         that.startFrom(0);
+                        that.hideButton();
+                        that.toCurrentThumbnail(that.currentId);
                         that.isFirstRun = false;
 
                     }
@@ -181,7 +193,7 @@ BEM.DOM.decl('content', {
                     var nextId = 'img' + (that.getIntId(id) + 1),
                         prevId = 'img' + (that.getIntId(id) - 1);
                     that.insertImage($('.slider__item_type_next img'), nextId);
-                    this.insertImage($('.slider__item_type_prev img'), prevId);
+                    that.insertImage($('.slider__item_type_prev img'), prevId);
                 });
 
             }
@@ -263,6 +275,9 @@ BEM.DOM.decl('content', {
             localStorage.currentId = this.getIntId($('.slider__item_type_current img').attr('id'));
             console.log(localStorage.currentId);
 
+            this.hideButton();
+            this.toCurrentThumbnail(this.currentId);
+
             this.insertImage($('.slider__item_type_next img'), 'img' + nextId);
             return dfd.promise();
         }
@@ -298,10 +313,21 @@ BEM.DOM.decl('content', {
             localStorage.currentId = this.getIntId($('.slider__item_type_current img').attr('id'));
             console.log(localStorage.currentId);
 
+            this.hideButton();
+            this.toCurrentThumbnail(this.currentId);
+
             this.insertImage($('.slider__item_type_prev img'), 'img' + prevId);
             return dfd.promise();
         }
 
+    },
+
+    toCurrentThumbnail: function(id) {
+
+        if ($('.thumbnail-current')){
+            $('.thumbnail-current').removeClass('thumbnail-current');
+        }
+        $('.thumbnail__item').eq(id).addClass('thumbnail-current');
     },
 
     startFrom: function(id) {
@@ -312,14 +338,14 @@ BEM.DOM.decl('content', {
 
     _onResize: function() {
 
-        var lastResize = new Date()
+        var lastResize = new Date(),
             that = this;
 
         $(window).on('resize', function() {
             if ( new Date() - lastResize > 100 ) {
                 lastResize = new Date();
                 that.reCalc();
-                that.doLeftScroll(than.currentId);
+                that.doLeftScroll(that.currentId);
             };
         })
     },
@@ -332,6 +358,20 @@ BEM.DOM.decl('content', {
 
     getIntId: function(id) {
         return parseInt(id.match(/\d+/)[0]);
+    },
+
+    hideButton: function() {
+
+        console.log(this.currentId);
+
+        if (this.currentId == this.entries.length){
+            $('.control_type_next').addClass('disable-control');
+        } else if (this.currentId == 0){
+            $('.control_type_prev').addClass('disable-control');
+        }else if ($('.disable-control')) {
+            $('.disable-control').removeClass('disable-control');
+        }
+
     },
 
     onWheel: function(event) {
