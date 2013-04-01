@@ -1,0 +1,61 @@
+.slider__spin {
+    background: url(data:image/png;base64,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);
+    position: absolute;
+    top: 50%;
+    margin-top: -21px;
+    left: 50%;
+    margin-left: -21px;
+    width: 42px;
+    height: 42px;
+    z-index: -1;
+    -webkit-animation: spin 1s infinite linear;
+    -moz-animation: spin 1s infinite linear;
+    -ms-animation: spin 1s infinite linear;
+    -o-animation: spin 1s infinite linear;
+    animation: spin 1s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate( 0deg );
+    }
+    100% {
+        -webkit-transform: rotate( 360deg );
+    }
+}
+
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate( 0deg );
+    }
+    100% {
+        -moz-transform: rotate( 360deg );
+    }
+}
+
+@-ms-keyframes spin {
+    0% {
+        -ms-transform: rotate( 0deg );
+    }
+    100% {
+        -ms-transform: rotate( 360deg );
+    }
+}
+
+@-o-keyframes spin {
+    0% {
+        -o-transform: rotate( 0deg );
+    }
+    100% {
+        -o-transform: rotate( 360deg );
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate( 0deg );
+    }
+    100% {
+        transform: rotate( 360deg );
+    }
+}
