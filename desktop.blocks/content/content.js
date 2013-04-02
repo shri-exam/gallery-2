@@ -15,6 +15,7 @@ BEM.DOM.decl('content', {
             this.countToFill = 0;
             this.currentId = 0;
             this.mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel";
+            this.isOpera = navigator.userAgent.match(/Opera/);
 
             document.addEventListener(this.mousewheelevt, function(event) {
                 that.onWheel(event);
@@ -50,7 +51,7 @@ BEM.DOM.decl('content', {
 
                     console.log('first run');
 
-                    if (!!JSON.parse(localStorage.getItem('entries')) && JSON.parse(localStorage.getItem('entries')).length == data.imageCount) {
+                    if (!!JSON.parse(localStorage.getItem('entries')) && JSON.parse(localStorage.getItem('entries')).length == data.imageCount -1) {
 
                         console.log("localStorage.entries is up to date");
 
@@ -122,7 +123,16 @@ BEM.DOM.decl('content', {
                     }
                 };
 
-                $('.thumbnail').append($(BEMHTML.apply(thumbnailItem)));
+
+                if (that.isOpera) {
+                    thumbnailItem = '<div class="thumbnail__item"><img src="'+item.img.S.href+'" fullimg="'+item.img.XL.href+'" title="'+item.title+'" id="'+ "img"+i +'"></div>';
+                    $('.thumbnail')[0].innerHTML += (thumbnailItem);
+                    console.log('opera');
+                } else {
+                    $('.thumbnail').append($(BEMHTML.apply(thumbnailItem)));
+                    console.log('not opera');
+                }
+
                 var thumbnailImg = $('.thumbnail__item #img'+i);
 
                 that.isImgLoaded(thumbnailImg).then(function() {
