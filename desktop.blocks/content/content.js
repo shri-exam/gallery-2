@@ -51,7 +51,7 @@ BEM.DOM.decl('content', {
 
                     console.log('first run');
 
-                    if (!!JSON.parse(localStorage.getItem('entries')) && JSON.parse(localStorage.getItem('entries')).length == data.imageCount -1) {
+                    if (!!JSON.parse(localStorage.getItem('entries')) && JSON.parse(localStorage.getItem('entries')).length  == data.imageCount) {
 
                         console.log("localStorage.entries is up to date");
 
@@ -76,6 +76,9 @@ BEM.DOM.decl('content', {
                         that.hideButton();
                         that.toCurrentThumbnail(that.currentId);
                         that.isFirstRun = false;
+
+                        console.log(data.imageCount);
+                        console.log(!!JSON.parse(localStorage.getItem('entries')));
 
                     }
 
@@ -127,10 +130,8 @@ BEM.DOM.decl('content', {
                 if (that.isOpera) {
                     thumbnailItem = '<div class="thumbnail__item"><img src="'+item.img.S.href+'" fullimg="'+item.img.XL.href+'" title="'+item.title+'" id="'+ "img"+i +'"></div>';
                     $('.thumbnail')[0].innerHTML += (thumbnailItem);
-                    console.log('opera');
                 } else {
                     $('.thumbnail').append($(BEMHTML.apply(thumbnailItem)));
-                    console.log('not opera');
                 }
 
                 var thumbnailImg = $('.thumbnail__item #img'+i);
@@ -289,8 +290,6 @@ BEM.DOM.decl('content', {
 
             this.hideButton();
             this.toCurrentThumbnail(this.currentId);
-
-            console.log( ' id 4 next fun ' + this.getIntId($('.slider__item_type_current img').attr('id')));
 
             this.insertImage($('.slider__item_type_next img'), 'img' + (this.currentId + 1));
             return dfd.promise();
