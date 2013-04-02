@@ -84,6 +84,7 @@ BEM.DOM.decl('content', {
 
                 that.nextLink = data.links.next + '&limit=30&callback=?';
                 that.fillThumbnail();
+                this._onResize();
                 that.getImages();
 
             } else {
@@ -234,6 +235,7 @@ BEM.DOM.decl('content', {
             console.log('width '+ that.entries[intId].img.XL.width);
 
             obj.removeClass('not-loaded');
+            this._onResize();
             that.reCalc();
             dfd.resolve();
         });
