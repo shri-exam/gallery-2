@@ -72,13 +72,10 @@ BEM.DOM.decl('content', {
 
                         console.log("localStorage.entries is empty");
 
-                        that.startFrom(0);
+                        that.startFrom(that.currentId);
                         that.hideButton();
                         that.toCurrentThumbnail(that.currentId);
                         that.isFirstRun = false;
-
-                        console.log(data.imageCount);
-                        console.log(!!JSON.parse(localStorage.getItem('entries')));
 
                     }
 
@@ -93,8 +90,6 @@ BEM.DOM.decl('content', {
                 localStorage.setItem('entries', JSON.stringify(that.entries));
                 that.fillThumbnail();
                 console.log('Parsing done. ' + (that.entries.length) + ' url\'s parsed');
-                console.log(JSON.parse(localStorage.getItem('entries')));
-                console.log(that.entries);
 
             }
         });
@@ -220,13 +215,21 @@ BEM.DOM.decl('content', {
             that = this,
             dfd = new $.Deferred;
 
+        console.log('is id '+id);
+        console.log('int id is '+intId);
+        console.log('url is '+this.entries[intId].img.XL.href);
+
         obj.addClass('not-loaded');
         obj.attr('src', this.entries[intId].img.XL.href);
         obj.attr('id', id);
 
         this.isImgLoaded(obj).then(function() {
-            obj.css('max-height', obj[0].naturalHeight);
-            obj.css('max-width', obj[0].naturalWidth);
+            obj.css('max-height', that.entries[intId].img.XL.height);
+            obj.css('max-width', that.entries[intId].img.XL.width);
+
+            console.log('height '+ that.entries[intId].img.XL.height);
+            console.log('width '+ that.entries[intId].img.XL.width);
+
             obj.removeClass('not-loaded');
             that.reCalc();
             dfd.resolve();
@@ -291,6 +294,8 @@ BEM.DOM.decl('content', {
             this.hideButton();
             this.toCurrentThumbnail(this.currentId);
 
+            console.log((this.currentId + 1));
+
             this.insertImage($('.slider__item_type_next img'), 'img' + (this.currentId + 1));
             return dfd.promise();
 
@@ -342,7 +347,7 @@ BEM.DOM.decl('content', {
     },
 
     startFrom: function(id) {
-        id != -1 && this.insertImage($('.slider__item_type_prev img'), 'img'+(id-1));
+        id != 0 && this.insertImage($('.slider__item_type_prev img'), 'img'+(id-1));
         this.insertImage($('.slider__item_type_current img'), 'img'+(id));
         this.insertImage($('.slider__item_type_next img'), 'img'+(id+1));
     },
@@ -366,7 +371,13 @@ BEM.DOM.decl('content', {
     },
 
     getIntId: function(id) {
-        return parseInt(id.match(/\d+/)[0]);
+
+        if (id.match(/\d+/) != null){
+            return parseInt(id.match(/\d+/)[0]);
+        } else {
+            return 0;
+        }
+
     },
 
     hideButton: function() {
