@@ -213,6 +213,7 @@ BEM.DOM.decl('content', {
 
         this.isImgLoaded(obj).then(function() {
             obj.css('max-height', obj[0].naturalHeight);
+            obj.css('max-width', obj[0].naturalWidth);
             obj.removeClass('not-loaded');
             that.reCalc();
         });
@@ -342,11 +343,9 @@ BEM.DOM.decl('content', {
             that = this;
 
         $(window).on('resize', function() {
-            if ( new Date() - lastResize > 100 ) {
                 lastResize = new Date();
                 that.reCalc();
                 that.doLeftScroll(that.currentId);
-            };
         })
     },
 
