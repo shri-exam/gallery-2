@@ -54,7 +54,7 @@ BEM.DOM.decl('content', {
 
                     if (!!JSON.parse(localStorage.getItem('entries')) && JSON.parse(localStorage.getItem('entries')).length  == data.imageCount) {
 
-                        console.log("localStorage.entries is up to date");
+                        //console.log("localStorage.entries is up to date");
 
                         that.entries = JSON.parse(localStorage.getItem('entries'));
                         that.isFirstRun = false;
@@ -65,7 +65,7 @@ BEM.DOM.decl('content', {
                         that.hideButton();
                         that.toCurrentThumbnail(that.currentId);
 
-                        console.log('start from ' + parseInt(localStorage.currentId));
+                        //console.log('start from ' + parseInt(localStorage.currentId));
 
                         return;
 
@@ -91,7 +91,7 @@ BEM.DOM.decl('content', {
 
                 localStorage.setItem('entries', JSON.stringify(that.entries));
                 that.fillThumbnail();
-                console.log('Parsing done. ' + (that.entries.length) + ' url\'s parsed');
+                //console.log('Parsing done. ' + (that.entries.length) + ' url\'s parsed');
 
             }
         });
@@ -217,10 +217,6 @@ BEM.DOM.decl('content', {
             that = this,
             dfd = new $.Deferred;
 
-        console.log('is id '+id);
-        console.log('int id is '+intId);
-        console.log('url is '+this.entries[intId].img.XL.href);
-
         obj.addClass('not-loaded');
         obj.attr('src', this.entries[intId].img.XL.href);
         obj.attr('id', id);
@@ -230,9 +226,6 @@ BEM.DOM.decl('content', {
             obj.css('max-width', that.entries[intId].img.XL.width);
 
             that.entries[intId].img.XL.height > window.innerHeight && obj.css('height', window.innerHeight);
-
-            console.log('height '+ that.entries[intId].img.XL.height);
-            console.log('width '+ that.entries[intId].img.XL.width);
 
             obj.removeClass('not-loaded');
             that._onResize();
@@ -299,8 +292,6 @@ BEM.DOM.decl('content', {
             this.hideButton();
             this.toCurrentThumbnail(this.currentId);
 
-            console.log((this.currentId + 1));
-
             this.insertImage($('.slider__item_type_next img'), 'img' + (this.currentId + 1));
             return dfd.promise();
 
@@ -363,15 +354,18 @@ BEM.DOM.decl('content', {
             that = this;
 
         $(window).on('resize', function() {
-                lastResize = new Date();
-                that.reCalc();
-                that.doLeftScroll(that.currentId);
+
+            lastResize = new Date();
+            that.reCalc();
+            that.doLeftScroll(that.currentId);
+
         })
     },
 
     reCalc: function() {
         if (window.innerHeight < $('.slider__inner img')[0].naturalWidth || window.innerHeight < $('.slider__inner img')[0].naturalHeight) {
             $('.slider__inner img').css('height', window.innerHeight);
+            this.doLeftScroll(that.currentId);
         }
     },
 
@@ -404,7 +398,6 @@ BEM.DOM.decl('content', {
         } else if ((id * 110) < (window.innerWidth / 2)) {
             $('.footer').scrollTo({top: 0, left: 0}, 300);
         }
-        console.log();
     },
 
     onWheel: function(event) {
