@@ -1,4 +1,4 @@
-.slider__item_type_prev {
+.slider__item.slider__item_type_prev {
     position: absolute;
     width: 100%;
     -webkit-transform: translate3d(-100%, 0, 0);

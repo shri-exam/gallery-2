@@ -6,16 +6,16 @@
     bottom: 0;
     overflow: hidden;
     box-sizing: border-box;
-    -webkit-transition: background-color, box-shadow, .2s ease-in;
-    -moz-transition: background-color, box-shadow .2s ease-in;
-    -ms-transition: background-color, box-shadow .2s ease-in;
-    -o-transition: background-color, box-shadow .2s ease-in;
-    transition: background-color, box-shadow .2s ease-in;
+    -webkit-transition: all, .2s ease-in;
+    -moz-transition: all .2s ease-in;
+    -ms-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    transition: all .2s ease-in;
 }
 
 .footer:hover {
     background-color: rgba(0, 0, 0, .7);
-    box-shadow: 0 0px 28px 16px rgba(0, 0, 0, .7);
+    box-shadow: 0 0px 20px 16px rgba(0, 0, 0, .7);
 }
 
 .footer::-webkit-scrollbar {

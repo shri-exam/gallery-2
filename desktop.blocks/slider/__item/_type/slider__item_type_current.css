@@ -1,4 +1,4 @@
-.slider__item.slider__item_type_current {
+.slider__item.slider__item.slider__item_type_current {
     position: absolute;
     opacity: 1;
     -webkit-transform: translate3d(0, 0, 0);
