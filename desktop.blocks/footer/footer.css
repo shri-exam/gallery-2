@@ -7,9 +7,10 @@
     overflow: hidden;
     box-sizing: border-box;
     -webkit-transition: background-color, box-shadow, .2s ease-in;
-    -moz-transition: background-color, box-shadow, .2s ease-in;
-    -ms-transition: background-color, box-shadow, .2s ease-in;
-    -o-transition: background-color, box-shadow, .2s ease-in;
+    -moz-transition: background-color, box-shadow .2s ease-in;
+    -ms-transition: background-color, box-shadow .2s ease-in;
+    -o-transition: background-color, box-shadow .2s ease-in;
+    transition: background-color, box-shadow .2s ease-in;
 }
 
 .footer:hover {
