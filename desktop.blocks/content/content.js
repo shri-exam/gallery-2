@@ -6,6 +6,9 @@ BEM.DOM.decl('content', {
 
             var that = this;
 
+            this.reCalc();
+            this._onResize();
+
             this.scrollAnimationTime = 100;
             this.nextLink = 'http://api-fotki.yandex.ru/api/users/aig1001/album/63684/photos/?format=json&limit=30&callback=?';
             this.entries = [];
@@ -30,8 +33,6 @@ BEM.DOM.decl('content', {
 
             this.getImages();
             this.bindControll();
-            this.reCalc();
-            this._onResize();
 
         }
 
@@ -226,6 +227,8 @@ BEM.DOM.decl('content', {
         this.isImgLoaded(obj).then(function() {
             obj.css('max-height', that.entries[intId].img.XL.height);
             obj.css('max-width', that.entries[intId].img.XL.width);
+
+            that.entries[intId].img.XL.height > window.innerHeight && obj.css('height', window.innerHeight);
 
             console.log('height '+ that.entries[intId].img.XL.height);
             console.log('width '+ that.entries[intId].img.XL.width);
