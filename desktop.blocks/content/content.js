@@ -355,7 +355,6 @@ BEM.DOM.decl('content', {
 
         $(window).on('resize', function() {
 
-            lastResize = new Date();
             that.reCalc();
             that.doLeftScroll(that.currentId);
 
@@ -363,10 +362,20 @@ BEM.DOM.decl('content', {
     },
 
     reCalc: function() {
-        if (window.innerHeight < $('.slider__inner img')[0].naturalWidth || window.innerHeight < $('.slider__inner img')[0].naturalHeight) {
+        if (window.innerHeight < $('.slider__inner img')[0].naturalHeight) {
+            console.log('height ' + window.innerHeight);
+
+            $('.slider__inner img').css('width', '');
             $('.slider__inner img').css('height', window.innerHeight);
-            this.doLeftScroll(that.currentId);
         }
+        if (window.innerWidth < $('.slider__inner img')[0].naturalWidth){
+            console.log(' width ' + window.innerWidth);
+
+            $('.slider__inner img').css('height', '');
+            $('.slider__inner img').css('width', window.innerWidth);
+        }
+        this.doLeftScroll(this.currentId);
+
     },
 
     getIntId: function(id) {
